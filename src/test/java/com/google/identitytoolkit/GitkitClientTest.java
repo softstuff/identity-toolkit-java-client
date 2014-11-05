@@ -16,29 +16,24 @@
 
 package com.google.identitytoolkit;
 
-import static org.mockito.Matchers.anyMapOf;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.io.BaseEncoding;
-
-import junit.framework.TestCase;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
 import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import junit.framework.TestCase;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.mockito.ArgumentCaptor;
+import static org.mockito.Matchers.anyMapOf;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test GitkitClient.
@@ -145,7 +140,10 @@ public class GitkitClientTest extends TestCase {
         .setName("New Name");
     String expectedApiUrl = GitkitClient.GITKIT_API_BASE + "setAccountInfo";
     String expectedPost = "{\"localId\":\"1111\",\"displayName\":\"New Name\"}";
+    String expectedPost2 = "{\"displayName\":\"New Name\",\"localId\":\"1111\"}";
     when(mockSender.post(expectedApiUrl, expectedPost, headers))
+        .thenReturn("{'localId':'1111','displayName':'New Name','email':'1111@example.com'}");
+    when(mockSender.post(expectedApiUrl, expectedPost2, headers))
         .thenReturn("{'localId':'1111','displayName':'New Name','email':'1111@example.com'}");
 
     gitkitClient.updateUser(user);
